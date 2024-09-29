@@ -28,7 +28,7 @@ public class PersonaDAO {
         List<Persona> personas = new ArrayList<>();
 
         try {
-            conexion = Conexion.getConnection();
+            conexion = Conexion.obtenerConnection();
             situacionEstado = conexion.prepareStatement(SQL_SELECT);
             resultado = situacionEstado.executeQuery();
             while (resultado.next()) {
@@ -45,9 +45,9 @@ public class PersonaDAO {
             System.out.println("Conexión no realizado. " + ex.getMessage());
             System.out.println();
         } finally {
-            Conexion.close(conexion);
-            Conexion.close(resultado);
-            Conexion.close(situacionEstado);
+            Conexion.cerrarRecurso(conexion);
+            Conexion.cerrarRecurso(resultado);
+            Conexion.cerrarRecurso(situacionEstado);
         }
 
         return personas;
@@ -62,7 +62,7 @@ public class PersonaDAO {
         int registros = 0;
 
         try {
-            conexion = Conexion.getConnection();
+            conexion = Conexion.obtenerConnection();
             situacionEstado = conexion.prepareStatement(SQL_INSERT);
             situacionEstado.setString(1, unaPersona.getNombre());
             situacionEstado.setString(2, unaPersona.getApellidos());
@@ -74,8 +74,8 @@ public class PersonaDAO {
             System.out.println();
         } finally {
             try {
-                Conexion.close(conexion);
-                Conexion.close(situacionEstado);
+                Conexion.cerrarRecurso(conexion);
+                Conexion.cerrarRecurso(situacionEstado);
 
             } catch (SQLException ex) {
                 System.out.println("No se ha podido cerrar la conexión. " + ex.getMessage());
@@ -96,7 +96,7 @@ public class PersonaDAO {
         PreparedStatement situacionEstado = null;
 
         try {
-            conexion = Conexion.getConnection();
+            conexion = Conexion.obtenerConnection();
             situacionEstado = conexion.prepareStatement(SQL_UPDATE);
             situacionEstado.setString(1, nombre);
             situacionEstado.setString(2, apellidos);
@@ -115,8 +115,8 @@ public class PersonaDAO {
             System.out.println("Actualizacion no realizada. " + ex.getMessage());
             System.out.println();
         } finally {
-            Conexion.close(situacionEstado);
-            Conexion.close(conexion);
+            Conexion.cerrarRecurso(situacionEstado);
+            Conexion.cerrarRecurso(conexion);
         }
     }
 
@@ -128,7 +128,7 @@ public class PersonaDAO {
         PreparedStatement situacionEstado = null;
 
         try {
-            conexion = Conexion.getConnection();
+            conexion = Conexion.obtenerConnection();
             situacionEstado = conexion.prepareStatement(SQL_DELETE);
             situacionEstado.setInt(1, idPersona);
             int registrosEliminados = situacionEstado.executeUpdate();
@@ -142,8 +142,8 @@ public class PersonaDAO {
         } catch (SQLException ex) {
             throw new IllegalStateException("No se ha eliminado el registro que se esperaba eliminar" + ex.getMessage());
         } finally {
-            Conexion.close(situacionEstado);
-            Conexion.close(conexion);
+            Conexion.cerrarRecurso(situacionEstado);
+            Conexion.cerrarRecurso(conexion);
         }
     }
 }

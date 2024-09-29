@@ -19,12 +19,12 @@ public class Conexion {
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = "MENXureta82";
 
-    private Connection conexion; // Almacena la conexión
+ 
 
     // Constructor que inicializa la conexión
     public Conexion() {
         try {
-            this.conexion = getConnection(); // Establece la conexión
+            obtenerConnection(); // Establezco la conexión
             System.out.println("Conexión establecida correctamente.");
         } catch (SQLException ex) {
             System.out.println("La conexión no se puede establecer: " + ex.getMessage());
@@ -32,40 +32,26 @@ public class Conexion {
     }
     
     // Método para obtener la conexión
-    public static Connection getConnection() throws SQLException {
+    public static Connection obtenerConnection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
     }
     
     // Métodos para cerrar recursos
-    public static void close(ResultSet resultado) throws SQLException {
+    public static void cerrarRecurso(ResultSet resultado) throws SQLException {
         if (resultado != null) {
             resultado.close();
         }
     }
     
-    public static void close(Statement estado) throws SQLException {
+    public static void cerrarRecurso(Statement estado) throws SQLException {
         if (estado != null) {
             estado.close();
         }
     }
     
-    public static void close(Connection conexion) throws SQLException {
+    public static void cerrarRecurso(Connection conexion) throws SQLException {
         if (conexion != null) {
             conexion.close();
-        }
-    }
-    
-    // Método para cerrar la conexión al terminar
-    public void cerrarConexion() {
-        try {
-            if (this.conexion != null && !this.conexion.isClosed()) {
-                this.conexion.close();
-                System.out.println("Conexión cerrada.");
-                System.out.println();
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error al cerrar la conexión: " + ex.getMessage());
-            System.out.println();
         }
     }
 }
